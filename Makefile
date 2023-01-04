@@ -11,16 +11,19 @@ LIBDIR := ./libs/lib
 DYLIBS := $(LIB)/*.dylib
 OUTPUT := run
 
+# Create Build directory and compile exec
 $(BUILDDIR)/$(OUTPUT): $(OBJS)
 	mkdir -p ./build
 	$(CXX) $(CXXFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $@ $^-framework OpenGL
 
+# Mark all headerfiles as dependencies for .cpp files
 $(OBJS): $(HEADERFILES)
 
+# Check for xcode CLT and install
 xcode:
 	chmod +x install-xcode-clt.sh
 	./install-xcode-clt.sh
 
-
+# Remove Build directory
 clean:
 	rm -r $(BUILDDIR)
