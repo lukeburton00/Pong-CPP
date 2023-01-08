@@ -1,7 +1,6 @@
-CXX := clang++
-CXXFLAGS := -Wall -std=c++17
+CXXFLAGS := clang++ -Wall -std=c++17
 SRC := ./src
-SRCDIRS := -I $(SRC)/Game
+SRCDIRS := -I $(SRC)/Game -I $(SRC)/Component -I $(SRC)/Input -I $(SRC)/Window
 SRCFILES := $(shell find $(SRC) -name '*.cpp')
 HEADERFILES := $(shell find $(SRC) -name '*.hpp')
 BUILDDIR := ./build
@@ -13,8 +12,8 @@ OUTPUT := run
 
 # Create Build directory and compile exec
 $(BUILDDIR)/$(OUTPUT): $(OBJS)
-	mkdir -p ./build
-	$(CXX) $(CXXFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $@ $^-framework OpenGL
+	if ! [ -d "./build" ]; then mkdir -p ./build; fi
+	$(CXXFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $@ $^-framework OpenGL
 
 # Mark all headerfiles as dependencies for .cpp files
 $(OBJS): $(HEADERFILES)
@@ -26,4 +25,4 @@ xcode:
 
 # Remove Build directory
 clean:
-	rm -r $(BUILDDIR)
+	if [ -d "./build" ]; then rm -r $(BUILDDIR); fi

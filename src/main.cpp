@@ -1,16 +1,11 @@
 #include <stdio.h>
 #include "Game.hpp"
+#include <iostream>
 
 int main(int argc, char * argv[])
 {
-    // SDL2 Winow Flags
-    GLuint flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
-
-    // Game window size
-    const int width = 640, height = 480;
-
-    // Create instance of the game
-    Game game(width, height, flags);
+    Game game;
+    game.initialize();
 
     // Start game loop
     game.run();
