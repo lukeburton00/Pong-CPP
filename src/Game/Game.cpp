@@ -8,6 +8,7 @@ void Game::initialize()
     mFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
     mTitle = "Ohheythere";
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
+    paddle = Paddle(glm::vec2(200, 100), glm::vec2(1,1));
 }
 
 void Game::run()
@@ -41,22 +42,31 @@ void Game::update()
     {
         printf("Escape pressed.\n");
         quit();
+        return;
     }
 
-    if (mInput.isKeyReleased("W"))
+    if (mInput.isKeyPressed("W"))
     {
-        printf("W released.\n");
-    }
-
-    if (mInput.isKeyReleased("S"))
-    {
-        printf("S released.\n");
+        paddle.mPosition.y += 1;
     }
 
     if (mInput.isKeyPressed("A"))
     {
-        printf("A pressed.\n");
+       paddle.mPosition.x -= 1;
     }
+
+    if (mInput.isKeyPressed("S"))
+    {
+        paddle.mPosition.y -= 1;
+    }
+
+    if (mInput.isKeyPressed("D"))
+    {
+        paddle.mPosition.x += 1;
+    }
+
+    std::cout << "Paddle X: " << paddle.mPosition.x << std::endl;
+    std::cout << "Paddle Y: " << paddle.mPosition.y << std::endl;
 }
 
 void Game::render()

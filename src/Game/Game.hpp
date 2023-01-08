@@ -2,6 +2,7 @@
 #include <string>
 #include "Input.hpp"
 #include "Window.hpp"
+#include "Paddle.hpp"
 
 class Game
 {
@@ -18,6 +19,8 @@ private:
 
     GLuint mWidth, mHeight, mFlags;
     const char * mTitle;
+
+    Paddle paddle;
 
     void processInput();
     void update();
