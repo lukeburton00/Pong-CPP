@@ -28,17 +28,14 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 	const char * vertexSource = vertexCode.c_str();
 	const char * fragmentSource = fragmentCode.c_str();
 
-    std::cout << "Vertex shader source: " << vertexCode << std::endl;
-    std::cout << "Fragment shader source: " << vertexCode << std::endl;
-	
-	int success;
-	char infoLog[512];
-	
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glCompileShader(vertexShader);
 	
     #ifdef DEBUG
+
+	int success;
+	char infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 	if(!success)
 	{

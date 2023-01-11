@@ -44,7 +44,7 @@ void Renderer::prepareTriangle()
 
 void Renderer::prepareShaders()
 {
-    Shader * shader = new Shader("src/Graphics/vertex.vsh","src/Graphics/fragment.fsh");
+    Shader * shader = new Shader("src/Graphics/vertex.vert","src/Graphics/fragment.frag");
     shaderProgram = shader->id;
     delete shader;
 }

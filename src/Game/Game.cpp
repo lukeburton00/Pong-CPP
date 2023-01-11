@@ -3,7 +3,10 @@
 
 void Game::initialize()
 {
+    #ifdef DEBUG
     printf("Initializing Game...\n");
+    #endif
+
     mWidth = 640;
     mHeight = 480;
     mFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
@@ -18,14 +21,14 @@ void Game::initialize()
 
 void Game::run()
 {
-    printf("Running Game...\n");
-    mElapsedTime = 0.0f;
-    mIsRunning = true;
-
     #ifdef DEBUG
+    printf("Running Game...\n");
     int frames = 0;
     int frames_per_second = 0;
     #endif
+
+    mElapsedTime = 0.0f;
+    mIsRunning = true;
     while (mIsRunning)
     {
         mTime.start();
@@ -55,16 +58,23 @@ void Game::run()
 
 void Game::quit()
 {
-    mIsRunning = false;
     mWindow.destroy();
+
+    #ifdef DEBUG
     printf("Game stopped.\n");
+    #endif
+    mIsRunning = false;
 }
 
 void Game::processInput()
 {
     mInput.processInput();
-    if (mInput.quitEvent) mIsRunning = false;
-}
+
+    if (mInput.quitEvent)
+    {
+        quit();
+    }
+} 
 
 void Game::update()
 {
@@ -73,34 +83,9 @@ void Game::update()
 
     if (keys[SDL_SCANCODE_ESCAPE])
     {
-        mIsRunning = false;
+        quit();
         return;
     }
-
-    if (keys[mInput.keyMap["W"]])
-    {
-        paddle.mPosition.y += 1 * mDeltaTime;
-    }
-
-    if (keys[mInput.keyMap["A"]])
-    {
-        paddle.mPosition.x -= 1 * mDeltaTime;
-    }
-
-    if (keys[mInput.keyMap["S"]])
-    {
-        paddle.mPosition.y -= 1 * mDeltaTime;
-    }
-
-    if (keys[mInput.keyMap["D"]])
-    {
-        paddle.mPosition.x += 1 * mDeltaTime;
-    }
-
-    #ifdef DEBUG
-    //std::cout << "Paddle X: " << paddle.mPosition.x << std::endl;
-    //std::cout << "Paddle Y: " << paddle.mPosition.y << std::endl;
-    #endif
 }
 
 

@@ -2,7 +2,10 @@
 
 void Window::create(const int &windowWidth, const int &windowHeight, const char * title, const GLuint &flags)
 {
+    #ifdef DEBUG
     printf("Creating window...\n");
+    #endif
+
     mWindowWidth = windowWidth;
     mWindowHeight = windowHeight;
     mWindowFlags = flags;
@@ -50,7 +53,10 @@ void Window::swapBuffers()
 
 void Window::destroy()
 {
+    #ifdef DEBUG
     printf("Destroying Window...\n");
+    #endif
+    
     SDL_DestroyWindow(mWindow);
     SDL_GL_DeleteContext(mContext);
 }
