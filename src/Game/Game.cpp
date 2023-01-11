@@ -11,6 +11,9 @@ void Game::initialize()
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
     paddle = Paddle(glm::vec2(200, 100), glm::vec2(1,1));
+
+    mRenderer.prepareTriangle();
+    mRenderer.prepareShaders();
 }
 
 void Game::run()
@@ -25,7 +28,6 @@ void Game::run()
     #endif
     while (mIsRunning)
     {
-        mDeltaTime = 0;
         mTime.start();
         processInput();
         update();
@@ -66,6 +68,7 @@ void Game::processInput()
 
 void Game::update()
 {
+
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
 
     if (keys[SDL_SCANCODE_ESCAPE])
@@ -94,12 +97,16 @@ void Game::update()
         paddle.mPosition.x += 1 * mDeltaTime;
     }
 
+    #ifdef DEBUG
     //std::cout << "Paddle X: " << paddle.mPosition.x << std::endl;
     //std::cout << "Paddle Y: " << paddle.mPosition.y << std::endl;
+    #endif
 }
 
 
 void Game::render()
 {
     mWindow.refresh();
+    mRenderer.draw();
+    mWindow.swapBuffers();
 }

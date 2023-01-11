@@ -40,6 +40,11 @@ void Window::refresh()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+}
+
+void Window::swapBuffers()
+{
 	SDL_GL_SwapWindow(mWindow);
 }
 

@@ -4,11 +4,11 @@
 #include "Window.hpp"
 #include "Paddle.hpp"
 #include "Time.hpp"
+#include "Renderer.hpp"
 
 class Game
 {
 public:
-
     void initialize();
     void run();
     void quit();
@@ -16,6 +16,7 @@ public:
 private:
     Input mInput;
     Window mWindow;
+    Renderer mRenderer;
     bool mIsRunning;
     float mDeltaTime;
     float mElapsedTime;
