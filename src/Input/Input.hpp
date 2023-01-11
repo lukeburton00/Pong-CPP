@@ -3,19 +3,13 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <iostream>
+#include <map>
 
 class Input
 {
 	public:
+		void initialize();
 		void processInput();
-		bool isKeyPressed(const char * key);
-		bool isKeyReleased(const char * key);
 		bool quitEvent;
-
-	private:
-		SDL_Keycode keyCodeDown;
-		std::vector<SDL_Keycode> pressedKeys;
-		std::vector<SDL_Keycode> releasedKeys;
-		SDL_Keycode keyCodeUp;
-		SDL_Event event;
+		std::map<std::string, SDL_Scancode> keyMap;
 };
