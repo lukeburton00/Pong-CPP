@@ -15,9 +15,9 @@ void Game::initialize()
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
 
-    playerOne = GameObject(glm::vec3(-0.8, 0, 0), glm::vec3(0.1, 3, 1));
+    playerOne = GameObject(glm::vec3(-0.8, 0, 0), glm::vec3(0.4, 3, 1));
 
-    playerTwo = GameObject(glm::vec3(0.8, 0, 0), glm::vec3(0.1,3,1));
+    playerTwo = GameObject(glm::vec3(0.8, 0, 0), glm::vec3(0.4,3,1));
 }
 
 void Game::run()
