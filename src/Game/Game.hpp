@@ -2,9 +2,8 @@
 #include <string>
 #include "Input.hpp"
 #include "Window.hpp"
-#include "Paddle.hpp"
 #include "Time.hpp"
-#include "Renderer.hpp"
+#include "GameObject.hpp"
 
 class Game
 {
@@ -16,7 +15,6 @@ public:
 private:
     Input mInput;
     Window mWindow;
-    Renderer mRenderer;
     bool mIsRunning;
     float mDeltaTime;
     float mElapsedTime;
@@ -25,7 +23,8 @@ private:
     GLuint mWidth, mHeight, mFlags;
     const char * mTitle;
 
-    Paddle paddle;
+    GameObject playerOne;
+    GameObject playerTwo;
 
     void processInput();
     void update();

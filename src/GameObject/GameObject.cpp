@@ -1,7 +1,12 @@
-#include "Renderer.hpp"
+#include "GameObject.hpp"
 
-void Renderer::prepareTriangle()
+GameObject::GameObject(glm::vec3 position, glm::vec3 scale)
 {
+    mPosition = position;
+    mScale = scale;
+    mColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    mShader = std::make_shared<Shader>("/Users/luke/Desktop/Pong/src/Graphics/vertex.vert","/Users/luke/Desktop/Pong/src/Graphics/fragment.frag");
     float vertices[] = {
          0.1f,  0.1f, 0.0f,  // top right
          0.1f, -0.1f, 0.0f,  // bottom right
@@ -13,10 +18,6 @@ void Renderer::prepareTriangle()
         0, 1, 3,  // first Triangle
         1, 2, 3   // second Triangle
     };
-
-    #ifdef DEBUG
-    printf("preparing triangles...\n");
-    #endif
 
     glGenVertexArrays(1, &mVAO);
     
@@ -36,32 +37,19 @@ void Renderer::prepareTriangle()
     glEnableVertexAttribArray(0);
 
     glBindVertexArray(0);
-
-    #ifdef DEBUG
-    printf("preparing triangles finished.\n");
-    #endif
 }
 
-void Renderer::prepareShaders()
+void GameObject::draw()
 {
-    shader = std::make_shared<Shader>("src/Graphics/vertex.vert","src/Graphics/fragment.frag");
-}
+    mShader->use();
 
-void Renderer::transform(float x, float y)
-{
     glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::translate(transform, glm::vec3(x, y, 0.0f));
+    transform = glm::translate(transform, glm::vec3(mPosition.x, mPosition.y, 0.0f));
+    transform = glm::scale(transform, mScale);
 
-    glm::vec4 color(1.0f, 1.0f,1.0f,1.0f);
+    mShader->setMat4("transform", transform);
+    mShader->setVec4("inColor", mColor);
 
-    shader->setMat4("transform", transform);
-    shader->setVec4("inColor", color);
-}
-
-void Renderer::draw(float dt, float x, float y)
-{
-    shader->use();
-    transform(x,y);
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

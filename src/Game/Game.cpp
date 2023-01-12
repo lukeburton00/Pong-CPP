@@ -11,12 +11,13 @@ void Game::initialize()
     mHeight = 480;
     mFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
     mTitle = "Performance Test";
+
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
-    paddle = Paddle(glm::vec2(0, 0), glm::vec2(1,1));
 
-    mRenderer.prepareTriangle();
-    mRenderer.prepareShaders();
+    playerOne = GameObject(glm::vec3(-0.8, 0, 0), glm::vec3(0.1, 3, 1));
+
+    playerTwo = GameObject(glm::vec3(0.8, 0, 0), glm::vec3(0.1,3,1));
 }
 
 void Game::run()
@@ -89,22 +90,22 @@ void Game::update()
 
     if (keys[mInput.keyMap["W"]])
     {
-        paddle.mPosition.y += 1 * mDeltaTime;
-    }
-
-    if (keys[mInput.keyMap["A"]])
-    {
-        paddle.mPosition.x -= 1 * mDeltaTime;
+        playerOne.mPosition.y += 1 * mDeltaTime;
     }
 
     if (keys[mInput.keyMap["S"]])
     {
-        paddle.mPosition.y -= 1 * mDeltaTime;
+        playerOne.mPosition.y -= 1 * mDeltaTime;
     }
 
-    if (keys[mInput.keyMap["D"]])
+    if (keys[mInput.keyMap["UpArrow"]])
     {
-        paddle.mPosition.x += 1 * mDeltaTime;
+        playerTwo.mPosition.y += 1 * mDeltaTime;
+    }
+
+    if (keys[mInput.keyMap["DownArrow"]])
+    {
+        playerTwo.mPosition.y -= 1 * mDeltaTime;
     }
 }
 
@@ -112,6 +113,7 @@ void Game::update()
 void Game::render()
 {
     mWindow.refresh();
-    mRenderer.draw(mDeltaTime, paddle.mPosition.x, paddle.mPosition.y);
+    playerOne.draw();
+    playerTwo.draw();
     mWindow.swapBuffers();
 }

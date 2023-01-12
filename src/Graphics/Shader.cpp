@@ -2,10 +2,6 @@
 
 Shader::Shader(const char * vertexPath, const char * fragmentPath)
 {
-    #ifdef DEBUG
-    printf("Shader constructor called.\n");
-    #endif
-    
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vertexShaderFile;
