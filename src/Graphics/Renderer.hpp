@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <stdio.h>
 #include "Shader.hpp"
+#include "SDL2/SDL.h"
 
 
 class Renderer
@@ -10,9 +11,10 @@ class Renderer
 public:
     void prepareTriangle();
     void prepareShaders();
-    void draw();
+    void draw(float dt, float x, float y);
+    void transform(float x, float y);
 
 private:
     GLuint mVAO;
-    GLuint shaderProgram;
+    std::shared_ptr<Shader> shader;
 };

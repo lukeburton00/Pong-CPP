@@ -13,7 +13,7 @@ void Game::initialize()
     mTitle = "Performance Test";
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
-    paddle = Paddle(glm::vec2(200, 100), glm::vec2(1,1));
+    paddle = Paddle(glm::vec2(0, 0), glm::vec2(1,1));
 
     mRenderer.prepareTriangle();
     mRenderer.prepareShaders();
@@ -86,12 +86,32 @@ void Game::update()
         quit();
         return;
     }
+
+    if (keys[mInput.keyMap["W"]])
+    {
+        paddle.mPosition.y += 1 * mDeltaTime;
+    }
+
+    if (keys[mInput.keyMap["A"]])
+    {
+        paddle.mPosition.x -= 1 * mDeltaTime;
+    }
+
+    if (keys[mInput.keyMap["S"]])
+    {
+        paddle.mPosition.y -= 1 * mDeltaTime;
+    }
+
+    if (keys[mInput.keyMap["D"]])
+    {
+        paddle.mPosition.x += 1 * mDeltaTime;
+    }
 }
 
 
 void Game::render()
 {
     mWindow.refresh();
-    mRenderer.draw();
+    mRenderer.draw(mDeltaTime, paddle.mPosition.x, paddle.mPosition.y);
     mWindow.swapBuffers();
 }

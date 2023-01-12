@@ -3,10 +3,10 @@
 void Renderer::prepareTriangle()
 {
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
+         0.1f,  0.1f, 0.0f,  // top right
+         0.1f, -0.1f, 0.0f,  // bottom right
+        -0.1f, -0.1f, 0.0f,  // bottom left
+        -0.1f,  0.1f, 0.0f   // top left 
     };
 
     unsigned int indices[] = {
@@ -44,14 +44,24 @@ void Renderer::prepareTriangle()
 
 void Renderer::prepareShaders()
 {
-    Shader * shader = new Shader("src/Graphics/vertex.vert","src/Graphics/fragment.frag");
-    shaderProgram = shader->id;
-    delete shader;
+    shader = std::make_shared<Shader>("src/Graphics/vertex.vert","src/Graphics/fragment.frag");
 }
 
-void Renderer::draw()
+void Renderer::transform(float x, float y)
 {
-    glUseProgram(shaderProgram);
+    glm::mat4 transform = glm::mat4(1.0f);
+    transform = glm::translate(transform, glm::vec3(x, y, 0.0f));
+
+    glm::vec4 color(1.0f, 1.0f,1.0f,1.0f);
+
+    shader->setMat4("transform", transform);
+    shader->setVec4("inColor", color);
+}
+
+void Renderer::draw(float dt, float x, float y)
+{
+    shader->use();
+    transform(x,y);
     glBindVertexArray(mVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
