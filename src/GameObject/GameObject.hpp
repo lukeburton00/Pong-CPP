@@ -10,11 +10,12 @@ public:
     glm::vec3 mPosition;
     glm::vec3 mScale;
     glm::vec4 mColor;
+    float mMovementSpeed;
     
     GameObject(){}
     GameObject(glm::vec3 position, glm::vec3 scale);
 
-    void draw();
+    void draw(float worldX, float worldY);
 
 
 private:

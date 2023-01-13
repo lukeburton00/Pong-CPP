@@ -8,10 +8,10 @@ GameObject::GameObject(glm::vec3 position, glm::vec3 scale)
     
     mShader = std::make_shared<Shader>("/Users/luke/Desktop/Pong/src/Graphics/vertex.vert","/Users/luke/Desktop/Pong/src/Graphics/fragment.frag");
     float vertices[] = {
-         0.1f,  0.1f, 0.0f,  // top right
-         0.1f, -0.1f, 0.0f,  // bottom right
-        -0.1f, -0.1f, 0.0f,  // bottom left
-        -0.1f,  0.1f, 0.0f   // top left 
+        1.0f,  1.0f, 0.0f,  // top right
+        1.0f, -1.0f, 0.0f,  // bottom right
+        -1.0f, -1.0f, 0.0f,  // bottom left
+        -1.0f,  1.0f, 0.0f   // top left 
     };
 
     unsigned int indices[] = {
@@ -39,15 +39,24 @@ GameObject::GameObject(glm::vec3 position, glm::vec3 scale)
     glBindVertexArray(0);
 }
 
-void GameObject::draw()
+void GameObject::draw(float worldX, float worldY)
 {
     mShader->use();
 
-    glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::translate(transform, glm::vec3(mPosition.x, mPosition.y, 0.0f));
-    transform = glm::scale(transform, mScale);
+    glm::mat4 model = glm::mat4(1.0f);
+    
+    model = glm::scale(model, mScale);
+    model = glm::translate(model, glm::vec3(mPosition.x, mPosition.y, 0.0f));
 
-    mShader->setMat4("transform", transform);
+
+    glm::mat4 view = glm::mat4(1.0f);
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::ortho(-worldX, worldX, -worldY, worldY, -0.1f, 0.1f);
+
+    mShader->setMat4("model", model);
+    mShader->setMat4("view", view);
+    mShader->setMat4("projection", projection);
     mShader->setVec4("inColor", mColor);
 
     glBindVertexArray(mVAO);

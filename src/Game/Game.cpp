@@ -7,23 +7,36 @@ void Game::initialize()
     printf("Initializing Game...\n");
     #endif
 
-    mWidth = 640;
-    mHeight = 480;
+    #ifdef RELEASE
+    printf("Running game in release mode. Enjoy!\n");
+    #endif
+
+    mWidth = 800;
+    mHeight = 600;
     mFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
-    mTitle = "Performance Test";
+
+    #ifdef DEBUG
+    mTitle = "DEBUG";
+    #endif
+
+    #ifdef RELEASE
+    mTitle = "Pong";
+    #endif
 
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
 
-    playerOne = GameObject(glm::vec3(-0.8, 0, 0), glm::vec3(0.4, 3, 1));
+    playerOne = GameObject(glm::vec3(-30, 0, 1), glm::vec3(20, 100, 1));
+    playerOne.mMovementSpeed = 20;
 
-    playerTwo = GameObject(glm::vec3(0.8, 0, 0), glm::vec3(0.4,3,1));
+    playerTwo = GameObject(glm::vec3(30, 0, 1), glm::vec3(20, 100, 1));
+    playerTwo.mMovementSpeed = playerOne.mMovementSpeed;
 }
 
 void Game::run()
 {
     #ifdef DEBUG
-    printf("Running Game...\n");
+    printf("Running Game...\n\n");
     int frames = 0;
     int frames_per_second = 0;
     #endif
@@ -48,7 +61,7 @@ void Game::run()
         if (mElapsedTime >= 1)
         {
             frames_per_second = frames/mElapsedTime;
-            std::cout << "frames per second: " << frames_per_second << std::endl;
+            std::cout << "Rolling FPS: " << frames_per_second << std::endl;
             mElapsedTime = 0;
             frames = 0;
         }
@@ -90,22 +103,22 @@ void Game::update()
 
     if (keys[mInput.keyMap["W"]])
     {
-        playerOne.mPosition.y += 1 * mDeltaTime;
+        playerOne.mPosition.y += playerOne.mMovementSpeed * mDeltaTime;
     }
-
+    
     if (keys[mInput.keyMap["S"]])
     {
-        playerOne.mPosition.y -= 1 * mDeltaTime;
+        playerOne.mPosition.y -= playerOne.mMovementSpeed  * mDeltaTime;
     }
 
     if (keys[mInput.keyMap["UpArrow"]])
     {
-        playerTwo.mPosition.y += 1 * mDeltaTime;
+        playerTwo.mPosition.y += playerTwo.mMovementSpeed * mDeltaTime;
     }
 
     if (keys[mInput.keyMap["DownArrow"]])
     {
-        playerTwo.mPosition.y -= 1 * mDeltaTime;
+        playerTwo.mPosition.y -= playerTwo.mMovementSpeed  * mDeltaTime;
     }
 }
 
@@ -113,7 +126,7 @@ void Game::update()
 void Game::render()
 {
     mWindow.refresh();
-    playerOne.draw();
-    playerTwo.draw();
+    playerOne.draw(mWidth, mHeight);
+    playerTwo.draw(mWidth, mHeight);
     mWindow.swapBuffers();
 }

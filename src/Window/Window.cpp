@@ -54,7 +54,7 @@ void Window::swapBuffers()
 void Window::destroy()
 {
     #ifdef DEBUG
-    printf("Destroying Window...\n");
+    printf("\nDestroying Window...\n");
     #endif
     
     SDL_DestroyWindow(mWindow);
