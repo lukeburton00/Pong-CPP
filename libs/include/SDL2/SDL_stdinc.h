@@ -65,9 +65,9 @@
 # endif
 # include <string.h>
 #endif
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
+//#ifdef HAVE_STRINGS_H
+//# include <strings.h>
+//#endif
 #ifdef HAVE_WCHAR_H
 # include <wchar.h>
 #endif
@@ -94,7 +94,7 @@
 #endif
 #if defined(HAVE_ALLOCA) && !defined(alloca)
 # if defined(HAVE_ALLOCA_H)
-#  include <alloca.h>
+#  include <malloc.h>
 # elif defined(__GNUC__)
 #  define alloca __builtin_alloca
 # elif defined(_MSC_VER)

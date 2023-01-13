@@ -2,6 +2,7 @@ CXXFLAGS := clang++ -Wall -std=c++17
 SRC := ./src
 RELEASEFLAGS := -DRELEASE
 DEBUGFLAGS := -DDEBUG
+COPYFILE := ./libs/lib/sdl2.dll
 SRCDIRS := -I $(SRC)/Game -I $(SRC)/GameObject -I $(SRC)/Input -I $(SRC)/Window -I $(SRC)/Time -I $(SRC)/Graphics/Shader
 SRCFILES := $(shell find $(SRC) -name '*.cpp')
 HEADERFILES := $(shell find $(SRC) -name '*.hpp')
@@ -17,15 +18,28 @@ OUTPUT := run
 all: $(RELEASEDIR) $(DEBUGDIR)
 
 # Create debug directory and compile exec
-$(DEBUGDIR): $(OBJS)
+macos $(DEBUGDIR): $(OBJS)
 	if ! [ -d "$(DEBUGDIR)" ]; then mkdir -p $(DEBUGDIR); fi
 	$(CXXFLAGS) $(DEBUGFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $(DEBUGDIR)/$(OUTPUT) -framework OpenGL
 
 
 # Create Build directory and compile exec
-$(RELEASEDIR): $(OBJS)
+macos $(RELEASEDIR): $(OBJS)
 	if ! [ -d "$(RELEASEDIR)" ]; then mkdir -p ./$(RELEASEDIR); fi
 	$(CXXFLAGS) $(RELEASEFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $(RELEASEDIR)/$(OUTPUT) -framework OpenGL
+
+# Create debug directory and compile exec
+windows $(DEBUGDIR): $(OBJS)
+	if ! [ -d "$(DEBUGDIR)" ]; then mkdir -p $(DEBUGDIR); fi
+	cp $(COPYFILE) $(DEBUGDIR)
+	$(CXXFLAGS) $(DEBUGFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lopengl32 -lglu32 -lGLEW32s -lSDL2 -o $(DEBUGDIR)/$(OUTPUT).exe
+
+
+# Create Build directory and compile exec
+windows $(RELEASEDIR): $(OBJS)
+	if ! [ -d "$(RELEASEDIR)" ]; then mkdir -p ./$(RELEASEDIR); fi
+	cp $(COPYFILE) $(RELEASEDIR)
+	$(CXXFLAGS) $(RELEASEFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lopengl32 -lglu32 -lGLEW32s -lSDL2 -o $(RELEASEDIR)/$(OUTPUT).exe
 
 # Mark all headerfiles as dependencies for .cpp files
 $(OBJS): $(HEADERFILES)

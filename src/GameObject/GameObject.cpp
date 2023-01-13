@@ -6,7 +6,7 @@ GameObject::GameObject(glm::vec3 position, glm::vec3 scale)
     mScale = scale;
     mColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     
-    mShader = std::make_shared<Shader>("/Users/luke/Desktop/Pong/src/Graphics/vertex.vert","/Users/luke/Desktop/Pong/src/Graphics/fragment.frag");
+    mShader = std::make_shared<Shader>("Shaders/vertex.vert","Shaders/fragment.frag");
     float vertices[] = {
         1.0f,  1.0f, 0.0f,  // top right
         1.0f, -1.0f, 0.0f,  // bottom right

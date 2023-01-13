@@ -33,9 +33,6 @@
 #include "SDL_platform.h"
 
 /* Make sure that this isn't included by Visual C++ */
-#ifdef _MSC_VER
-#error You should run git checkout -f include/SDL_config.h
-#endif
 
 /* C language features */
 /* #undef const */
@@ -72,7 +69,7 @@
 #define HAVE_STDINT_H 1
 #define HAVE_STDIO_H 1
 #define HAVE_STDLIB_H 1
-#define HAVE_STRINGS_H 1
+#define HAVE_STRINGS_H 0
 #define HAVE_STRING_H 1
 #define HAVE_SYS_TYPES_H 1
 #define HAVE_WCHAR_H 1
