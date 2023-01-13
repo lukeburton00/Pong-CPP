@@ -8,35 +8,34 @@ SRCFILES := $(shell find $(SRC) -name '*.cpp')
 HEADERFILES := $(shell find $(SRC) -name '*.hpp')
 RELEASEDIR := ./release
 DEBUGDIR := ./debug
+WINRELEASE := ./winrelease
+WINDEBUG := ./windebug
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 INCLUDEDIR := ./libs/include
 LIBDIR := ./libs/lib
 DYLIBS := $(LIB)/*.dylib
 OUTPUT := run
 
-# Create all directories and compile execs
-all: $(RELEASEDIR) $(DEBUGDIR)
-
 # Create debug directory and compile exec
-macos $(DEBUGDIR): $(OBJS)
+$(DEBUGDIR): $(OBJS)
 	if ! [ -d "$(DEBUGDIR)" ]; then mkdir -p $(DEBUGDIR); fi
 	$(CXXFLAGS) $(DEBUGFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $(DEBUGDIR)/$(OUTPUT) -framework OpenGL
 
 
 # Create Build directory and compile exec
-macos $(RELEASEDIR): $(OBJS)
+$(RELEASEDIR): $(OBJS)
 	if ! [ -d "$(RELEASEDIR)" ]; then mkdir -p ./$(RELEASEDIR); fi
 	$(CXXFLAGS) $(RELEASEFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lGLEW -lSDL2 -o $(RELEASEDIR)/$(OUTPUT) -framework OpenGL
 
 # Create debug directory and compile exec
-windows $(DEBUGDIR): $(OBJS)
+$(WINDEBUG): $(OBJS)
 	if ! [ -d "$(DEBUGDIR)" ]; then mkdir -p $(DEBUGDIR); fi
 	cp $(COPYFILE) $(DEBUGDIR)
 	$(CXXFLAGS) $(DEBUGFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lopengl32 -lglu32 -lGLEW32s -lSDL2 -o $(DEBUGDIR)/$(OUTPUT).exe
 
 
-# Create Build directory and compile exec
-windows $(RELEASEDIR): $(OBJS)
+#Create Build directory and compile exec
+$(WINRELEASE): $(OBJS)
 	if ! [ -d "$(RELEASEDIR)" ]; then mkdir -p ./$(RELEASEDIR); fi
 	cp $(COPYFILE) $(RELEASEDIR)
 	$(CXXFLAGS) $(RELEASEFLAGS) $(SRCFILES) -I $(INCLUDEDIR) $(SRCDIRS) -L $(LIBDIR) -lopengl32 -lglu32 -lGLEW32s -lSDL2 -o $(RELEASEDIR)/$(OUTPUT).exe
