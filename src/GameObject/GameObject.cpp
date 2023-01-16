@@ -44,10 +44,8 @@ void GameObject::draw(float worldX, float worldY)
     mShader->use();
 
     glm::mat4 model = glm::mat4(1.0f);
-    
-    model = glm::scale(model, mScale);
     model = glm::translate(model, glm::vec3(mPosition.x, mPosition.y, 0.0f));
-
+    model = glm::scale(model, mScale);
 
     glm::mat4 view = glm::mat4(1.0f);
 

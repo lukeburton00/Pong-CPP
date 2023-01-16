@@ -26,11 +26,17 @@ void Game::initialize()
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
 
-    playerOne = GameObject(glm::vec3(-30, 0, 1), glm::vec3(20, 100, 1));
-    playerOne.mMovementSpeed = 20;
+    playerOne = Paddle(glm::vec3(-550, 0, 1), glm::vec3(20, 100, 0));
+    playerOne.mMovementSpeed = 800;
 
-    playerTwo = GameObject(glm::vec3(30, 0, 1), glm::vec3(20, 100, 1));
-    playerTwo.mMovementSpeed = playerOne.mMovementSpeed;
+    playerTwo = Paddle(glm::vec3(550, 0, 1), glm::vec3(20, 100, 0));
+    playerTwo.mMovementSpeed = 800;
+
+    ball = Ball(glm::vec3(0,0,0), glm::vec3(10,10,0));
+    ball.mVelocity.x = -500;
+    ball.mVelocity.y = 0;
+
+    reflectionPower = 5;
 }
 
 void Game::run()
@@ -92,6 +98,10 @@ void Game::processInput()
 
 void Game::update()
 {
+    ball.mPosition += ball.mVelocity * mDeltaTime;
+
+    checkPlayerBounds();
+    checkBallBounds();
 
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
 
@@ -128,5 +138,57 @@ void Game::render()
     mWindow.refresh();
     playerOne.draw(mWidth, mHeight);
     playerTwo.draw(mWidth, mHeight);
+    ball.draw(mWidth, mHeight);
     mWindow.swapBuffers();
+}
+
+void Game::checkPlayerBounds()
+{
+    if ((playerOne.mPosition.y + playerOne.mScale.y) > mHeight)
+    {
+        playerOne.mPosition.y = mHeight - playerOne.mScale.y;
+    }
+
+    if ((playerOne.mPosition.y - playerOne.mScale.y) < -mHeight)
+    {
+        playerOne.mPosition.y = -mHeight + playerOne.mScale.y;
+    }
+
+    if ((playerTwo.mPosition.y + playerTwo.mScale.y) > mHeight)
+    {
+        playerTwo.mPosition.y = mHeight - playerTwo.mScale.y;
+    }
+
+    if ((playerTwo.mPosition.y - playerTwo.mScale.y) < -mHeight)
+    {
+        playerTwo.mPosition.y = -mHeight + playerTwo.mScale.y;
+    }
+}
+
+void Game::checkBallBounds()
+{
+    bool ballCollidedWithPlayerOne = (ball.mPosition.x - ball.mScale.x <= (playerOne.mPosition.x)) && (ball.mPosition.y > playerOne.mPosition.y - playerOne.mScale.y) && (ball.mPosition.y < (playerOne.mPosition.y + playerOne.mScale.y));
+    bool ballCollidedWithPlayerTwo = (ball.mPosition.x + ball.mScale.x >= (playerTwo.mPosition.x)) && (ball.mPosition.y > playerTwo.mPosition.y - playerTwo.mScale.y) && (ball.mPosition.y < (playerTwo.mPosition.y + playerTwo.mScale.y));
+
+    if (ball.mPosition.y + ball.mScale.y > mHeight)
+    {
+        ball.mVelocity.y *= -1;
+    }
+
+    if (ball.mPosition.y - ball.mScale.y < -mHeight)
+    {
+        ball.mVelocity.y *= -1;
+    }
+
+    if (ballCollidedWithPlayerOne)
+    {
+        ball.mVelocity.x *= -1;
+        ball.mVelocity.y = ball.mPosition.y - playerOne.mPosition.y * reflectionPower;
+    }
+
+    if (ballCollidedWithPlayerTwo)
+    {
+        ball.mVelocity.x *= -1;
+        ball.mVelocity.y = ball.mPosition.y - playerTwo.mPosition.y * reflectionPower;
+    }
 }

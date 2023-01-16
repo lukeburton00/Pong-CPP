@@ -10,6 +10,7 @@ public:
     glm::vec3 mPosition;
     glm::vec3 mScale;
     glm::vec4 mColor;
+    glm::vec3 mVelocity;
     float mMovementSpeed;
     
     GameObject(){}

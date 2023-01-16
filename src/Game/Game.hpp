@@ -4,6 +4,8 @@
 #include "Window.hpp"
 #include "Time.hpp"
 #include "GameObject.hpp"
+#include "Paddle.hpp"
+#include "Ball.hpp"
 
 class Game
 {
@@ -19,14 +21,21 @@ private:
     float mDeltaTime;
     float mElapsedTime;
     Time mTime;
+    float reflectionPower;
 
-    GLuint mWidth, mHeight, mFlags;
+    GLint64 mWidth, mHeight, mFlags;
     const char * mTitle;
 
     GameObject playerOne;
     GameObject playerTwo;
+    GameObject ball;
+
+    float paddleSpeed, ballSpeed;
 
     void processInput();
     void update();
     void render();
+
+    void checkPlayerBounds();
+    void checkBallBounds();
 };
