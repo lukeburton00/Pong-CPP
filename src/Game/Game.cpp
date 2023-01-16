@@ -185,20 +185,12 @@ void Game::checkBallBounds()
     {
         ball.mVelocity.x *= -1;
         ball.mVelocity.y = ball.mPosition.y - playerOne.mPosition.y * reflectionPower;
-
-        #ifdef DEBUG
-        printf("Ball collided with player one.\n");
-        #endif
     }
 
     if (ballCollidedWithPlayerTwo)
     {
         ball.mVelocity.x *= -1;
         ball.mVelocity.y = ball.mPosition.y - playerTwo.mPosition.y * reflectionPower;
-
-        #ifdef DEBUG
-        printf("Ball collided with player two.\n");
-        #endif
     }
 }
 
