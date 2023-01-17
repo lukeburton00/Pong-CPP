@@ -8,6 +8,8 @@ add_executable(Main src/Game/game.cpp src/GameObject/GameObject.cpp src/Graphics
 add_compile_definitions(DEBUG)
 
 find_package(OpenGL REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(GLEW REQUIRED)
 
-include_directories(/opt/homebrew/include ./include ${OPENGL_INCLUDE_DIR} ./Shaders)
-target_link_libraries(Main /opt/homebrew/lib/libSDL2.dylib /opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.dylib ${OPENGL_LIBRARIES})
+target_include_directories(Main PUBLIC ./include PUBLIC ${SDL2_INCLUDE_DIRS} PUBLIC ${GLEW_INCLUDE_DIRS} PUBLIC ${OPENGL_INCLUDE_DIR} PUBLIC ./Shaders)
+target_link_libraries(Main ${SDL2_LIBRARIES} GLEW::GLEW ${OPENGL_LIBRARIES})
