@@ -1,5 +1,3 @@
-## Needs Revision
-
 # Pong-CPP
 Pong clone built from scratch using OpenGL and SDL2
 
