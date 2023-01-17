@@ -3,10 +3,17 @@
 # Pong-CPP
 Pong clone built from scratch using OpenGL and SDL2
 
-To run:
-- Make sure you have xcode CLI installed ( xcode-select --install )
-- Run 'make' in this directory
-- Run 'debug/run' for the debug version and 'release/run' for the release version
+Dependencies:
+- SDL2
+- GLEW
+- glm
 
-To uninstall xcode CLI:
-- Run 'make xcode remove' from this directory
+To build:
+- mkdir build
+- cmake -S . -B ./build
+
+To run:
+- cd build
+- ./main
+
+

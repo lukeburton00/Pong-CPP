@@ -26,17 +26,18 @@ void Game::initialize()
     mWindow.create(mWidth, mHeight, mTitle, mFlags);
     mInput.initialize();
 
-    playerOne = Paddle(glm::vec3(-700, 0, 1), glm::vec3(20, 100, 0));
+    playerOne = GameObject(glm::vec3(-700, 0, 1), glm::vec3(20, 100, 0));
     playerOne.mMovementSpeed = 800;
 
-    playerTwo = Paddle(glm::vec3(700, 0, 1), glm::vec3(20, 100, 0));
+    playerTwo = GameObject(glm::vec3(700, 0, 1), glm::vec3(20, 100, 0));
     playerTwo.mMovementSpeed = 800;
 
-    ball = Ball(glm::vec3(0,0,0), glm::vec3(10,10,0));
+    ball = GameObject(glm::vec3(0,0,0), glm::vec3(10,10,0));
+
     ball.mVelocity.x = -500;
     ball.mVelocity.y = 0;
 
-    reflectionPower = 2;
+    previousServe = ball.mVelocity.x;
 }
 
 void Game::run()
@@ -99,10 +100,10 @@ void Game::processInput()
 void Game::update()
 {
     ball.mPosition += ball.mVelocity * mDeltaTime;
-
+    checkWinCondition();
     checkPlayerBounds();
     checkBallBounds();
-    checkWinCondition();
+
 
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
 
@@ -168,8 +169,8 @@ void Game::checkPlayerBounds()
 
 void Game::checkBallBounds()
 {
-    bool ballCollidedWithPlayerOne = (ball.mPosition.x - ball.mScale.x <= (playerOne.mPosition.x + playerOne.mScale.x)) && ball.mPosition.x >= playerOne.mPosition.x && (ball.mPosition.y - ball.mScale.y > playerOne.mPosition.y - playerOne.mScale.y) && (ball.mPosition.y + ball.mScale.x < (playerOne.mPosition.y + playerOne.mScale.y));
-    bool ballCollidedWithPlayerTwo = (ball.mPosition.x + ball.mScale.x >= (playerTwo.mPosition.x - playerTwo.mScale.x)) && ball.mPosition.x <= playerTwo.mPosition.x &&(ball.mPosition.y - ball.mScale.y > playerTwo.mPosition.y - playerTwo.mScale.y) && (ball.mPosition.y + ball.mScale.x < (playerTwo.mPosition.y + playerTwo.mScale.y));
+    bool ballCollidedWithPlayerOne = (ball.mPosition.x - ball.mScale.x <= (playerOne.mPosition.x + playerOne.mScale.x)) && ball.mPosition.x + ball.mScale.x >= playerOne.mPosition.x - playerOne.mScale.x && ((ball.mPosition.y + ball.mScale.y >= playerOne.mPosition.y - playerOne.mScale.y) && (ball.mPosition.y - ball.mScale.x < (playerOne.mPosition.y + playerOne.mScale.y)));
+    bool ballCollidedWithPlayerTwo = (ball.mPosition.x + ball.mScale.x >= (playerTwo.mPosition.x - playerTwo.mScale.x)) && ball.mPosition.x - ball.mScale.x <= playerTwo.mPosition.x + playerTwo.mPosition.x && ((ball.mPosition.y + ball.mScale.y >= playerTwo.mPosition.y - playerTwo.mScale.y) && (ball.mPosition.y - ball.mScale.x < (playerTwo.mPosition.y + playerTwo.mScale.y)));
 
     if (ball.mPosition.y + ball.mScale.y > mHeight)
     {
@@ -183,14 +184,17 @@ void Game::checkBallBounds()
 
     if (ballCollidedWithPlayerOne)
     {
+        ball.mVelocity.y = (ball.mPosition.y - playerOne.mPosition.y);
         ball.mVelocity.x *= -1;
-        ball.mVelocity.y = ball.mPosition.y - playerOne.mPosition.y * reflectionPower;
+        ball.mVelocity.x += 10;
+
+        
     }
 
     if (ballCollidedWithPlayerTwo)
     {
-        ball.mVelocity.x *= -1;
-        ball.mVelocity.y = ball.mPosition.y - playerTwo.mPosition.y * reflectionPower;
+        ball.mVelocity.x *= -1.1;
+        ball.mVelocity.y = (ball.mPosition.y - playerTwo.mPosition.y);
     }
 }
 
@@ -202,11 +206,9 @@ void Game::checkWinCondition()
         playerOne.mPosition = glm::vec3(-700,0,0);
         playerTwo.mPosition = glm::vec3(700,0,0);
 
-        ball.mVelocity.x *= -1;
+        ball.mVelocity.x = previousServe * -1;
         ball.mVelocity.y = 0;
-
-        sleep(1);
-
+        previousServe = ball.mVelocity.x;
 
     }
 }

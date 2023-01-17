@@ -5,10 +5,11 @@
 
 int main(int argc, char * argv[])
 {
+    // Initialize game
     Game game;
     game.initialize();
 
-    // Start game loop
+    // Start game
     game.run();
 
     // Exit
