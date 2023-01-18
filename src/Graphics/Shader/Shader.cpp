@@ -53,14 +53,13 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 	};
     #endif
 	
-	// shader Program
 	id = glCreateProgram();
 	glAttachShader(id, vertexShader);
 	glAttachShader(id, fragmentShader);
 	glLinkProgram(id);
 	
     #ifdef DEBUG
-	// print linking errors if any
+
 	glGetProgramiv(id, GL_LINK_STATUS, &success);
 	if(!success)
 	{
@@ -69,7 +68,6 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 	}
     #endif
 	  
-	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 }
@@ -77,21 +75,6 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 void Shader::use()
 {
 	glUseProgram(id);
-}
-
-void Shader::setBool(const std::string &name, bool value) const
-{
-	glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
-}
-
-void Shader::setInt(const std::string &name, int value) const
-{
-	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
-}
-
-void Shader::setFloat(const std::string &name, float value) const
-{
-	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::setVec4(const std::string &name, glm::vec4 value) const
